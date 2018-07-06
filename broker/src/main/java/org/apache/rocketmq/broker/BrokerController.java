@@ -653,33 +653,25 @@ public class BrokerController {
         if (this.messageStore != null) {
             this.messageStore.start();
         }
-
         if (this.remotingServer != null) {
             this.remotingServer.start();
         }
-
         if (this.fastRemotingServer != null) {
             this.fastRemotingServer.start();
         }
-
         if (this.brokerOuterAPI != null) {
             this.brokerOuterAPI.start();
         }
-
         if (this.pullRequestHoldService != null) {
             this.pullRequestHoldService.start();
         }
-
         if (this.clientHousekeepingService != null) {
             this.clientHousekeepingService.start();
         }
-
         if (this.filterServerManager != null) {
             this.filterServerManager.start();
         }
-
         this.registerBrokerAll(true, false);
-
         this.scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
 
             @Override
@@ -691,11 +683,9 @@ public class BrokerController {
                 }
             }
         }, 1000 * 10, 1000 * 30, TimeUnit.MILLISECONDS);
-
         if (this.brokerStatsManager != null) {
             this.brokerStatsManager.start();
         }
-
         if (this.brokerFastFailure != null) {
             this.brokerFastFailure.start();
         }

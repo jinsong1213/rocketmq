@@ -53,12 +53,10 @@ public abstract class ServiceThread implements Runnable {
                 this.notify();
             }
         }
-
         try {
             if (interrupt) {
                 this.thread.interrupt();
             }
-
             long beginTime = System.currentTimeMillis();
             this.thread.join(this.getJointime());
             long eclipseTime = System.currentTimeMillis() - beginTime;

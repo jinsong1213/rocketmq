@@ -28,6 +28,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
 import org.apache.rocketmq.common.BrokerConfig;
+import org.apache.rocketmq.common.DebugConfig;
 import org.apache.rocketmq.common.MQVersion;
 import org.apache.rocketmq.common.MixAll;
 import org.apache.rocketmq.common.constant.LoggerName;
@@ -107,10 +108,7 @@ public class BrokerStartup {
             nettyServerConfig.setListenPort(10911);
             final MessageStoreConfig messageStoreConfig = new MessageStoreConfig();
 
-            if (BrokerRole.SLAVE == messageStoreConfig.getBrokerRole()) {
-                int ratio = messageStoreConfig.getAccessMessageInMemoryMaxRatio() - 10;
-                messageStoreConfig.setAccessMessageInMemoryMaxRatio(ratio);
-            }
+
 
             if (commandLine.hasOption('c')) {
                 String file = commandLine.getOptionValue('c');
@@ -132,6 +130,19 @@ public class BrokerStartup {
             }
 
             MixAll.properties2Object(ServerUtil.commandLine2Properties(commandLine), brokerConfig);
+
+            DebugConfig.configBrokerA(brokerConfig);
+            brokerConfig.setNamesrvAddr(DebugConfig.getNameServerAddrs());
+            if(brokerConfig.getBrokerId()==MixAll.MASTER_ID){
+                messageStoreConfig.setBrokerRole(BrokerRole.ASYNC_MASTER);
+            }else{
+                messageStoreConfig.setBrokerRole(BrokerRole.SLAVE);
+            }
+
+            if (BrokerRole.SLAVE == messageStoreConfig.getBrokerRole()) {
+                int ratio = messageStoreConfig.getAccessMessageInMemoryMaxRatio() - 10;
+                messageStoreConfig.setAccessMessageInMemoryMaxRatio(ratio);
+            }
 
             if (null == brokerConfig.getRocketmqHome()) {
                 System.out.printf("Please set the " + MixAll.ROCKETMQ_HOME_ENV

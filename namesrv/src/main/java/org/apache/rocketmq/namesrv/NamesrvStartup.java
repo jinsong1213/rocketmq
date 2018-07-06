@@ -27,6 +27,7 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
+import org.apache.rocketmq.common.DebugConfig;
 import org.apache.rocketmq.common.MQVersion;
 import org.apache.rocketmq.common.MixAll;
 import org.apache.rocketmq.common.constant.LoggerName;
@@ -59,8 +60,14 @@ public class NamesrvStartup {
             }
 
             final NamesrvConfig namesrvConfig = new NamesrvConfig();
+
+            namesrvConfig.setRocketmqHome(DebugConfig.rocketHome());
+
             final NettyServerConfig nettyServerConfig = new NettyServerConfig();
-            nettyServerConfig.setListenPort(9876);
+
+            int port = DebugConfig.getNameServerPort();
+            nettyServerConfig.setListenPort(port);
+
             if (commandLine.hasOption('c')) {
                 String file = commandLine.getOptionValue('c');
                 if (file != null) {

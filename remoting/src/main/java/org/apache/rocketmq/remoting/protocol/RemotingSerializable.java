@@ -51,6 +51,7 @@ public abstract class RemotingSerializable {
         return null;
     }
 
+
     public String toJson() {
         return toJson(false);
     }
