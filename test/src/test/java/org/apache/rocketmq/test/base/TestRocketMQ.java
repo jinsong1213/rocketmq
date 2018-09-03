@@ -21,7 +21,9 @@ public class TestRocketMQ {
         Message msg = new Message();
         msg.setTopic("reinhardt1_topic");
         msg.setTags("reinhardt1_tags");
-        MqUtils.getInstance().producerMsg(msg);
+        msg.setBody("HelloWorld".getBytes());
+        MqUtils mqUtils = MqUtils.getInstance();
+        mqUtils.producerMsg(msg);
 
         Thread.currentThread().join();
     }
